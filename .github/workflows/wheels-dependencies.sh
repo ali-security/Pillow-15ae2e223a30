@@ -269,7 +269,9 @@ function build {
     fi
     build_simple libxcb $LIBXCB_VERSION https://www.x.org/releases/individual/lib
 
-    build_libjpeg_turbo
+    # libjpeg-turbo embeds its CMake build date ("build YYYYMMDD") in the
+    # library; pin it to the 12.3.0 release date so rebuilds are reproducible.
+    SOURCE_DATE_EPOCH=1782907200 build_libjpeg_turbo
     if [[ -n "$IS_MACOS" ]]; then
         # Custom tiff build to include jpeg; by default, configure won't include
         # headers/libs in the custom macOS/iOS prefix. Explicitly disable webp,
